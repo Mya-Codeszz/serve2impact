@@ -44,13 +44,13 @@ export default function HoursPage() {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-    await supabase.from('volunteer_hours_log').insert({
-      student_id: user.id,
-      organization_name: orgName,
-      date,
-      hours: Number(hours),
-      description,
-    });
+await supabase.from('volunteer_hours_log').insert({
+  student_id: user.id,
+  organization_name: orgName,
+  date,
+  hours: Number(hours),
+  description,
+} as any);
 
     setOrgName('');
     setDate('');
