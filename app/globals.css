@@ -5,13 +5,13 @@
 :root {
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
+  --font-script: "Caveat", cursive;
 }
 
 body {
   @apply bg-cream text-forest font-body;
 }
 
-/* Reduced motion respected app-wide */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
@@ -23,4 +23,9 @@ body {
 
 .focus-ring {
   @apply outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-cream;
+}
+
+.script-accent {
+  @apply font-script text-2xl text-leaf-DEFAULT;
+  color: #7CAE3E;
 }
