@@ -29,7 +29,11 @@ export default async function DashboardPage() {
   const completedCount = (savedRows ?? []).filter((r: { status: string }) => r.status === 'completed').length;
   return (
     <div>
-      <h1 className="text-2xl font-bold">Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''}</h1>
+      <h1 className="text-2xl font-bold">
+  Welcome back{(profile as { full_name?: string | null } | null)?.full_name
+    ? `, ${(profile as { full_name?: string | null }).full_name}`
+    : ''}
+</h1>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
         {[
