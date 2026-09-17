@@ -40,16 +40,17 @@ export default function SaveButton({
           setSaved(false);
         }
       } else {
-        const { error } = await supabase
+        // Supabase's current generated type is incorrectly resolving
+        // this table's insert type to never[]. Keep the database call
+        // itself unchanged while bypassing that incorrect TypeScript type.
+        const untypedSupabase = supabase as any;
+
+        const { error } = await untypedSupabase
           .from('student_opportunities')
           .insert({
             student_id: user.id,
             opportunity_id: opportunityId,
             status: 'interested',
-          } as {
-            student_id: string;
-            opportunity_id: string;
-            status: 'interested';
           });
 
         if (!error) {
