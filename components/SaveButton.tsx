@@ -36,11 +36,13 @@ export default function SaveButton({
         .eq('student_id', user.id)
         .eq('opportunity_id', opportunityId);
     } else {
-      await supabase.from('student_opportunities').insert({
-        student_id: user.id,
-        opportunity_id: opportunityId,
-        status: 'interested',
-      });
+      await supabase
+        .from('student_opportunities')
+        .insert({
+          student_id: user.id,
+          opportunity_id: opportunityId,
+          status: 'interested',
+        });
     }
 
     setSaved(!saved);
