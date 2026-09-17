@@ -26,6 +26,6 @@ body {
 }
 
 .script-accent {
-  @apply font-script text-2xl text-leaf-DEFAULT;
+  @apply font-script text-2xl;
   color: #7CAE3E;
 }
