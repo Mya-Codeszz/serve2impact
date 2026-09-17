@@ -13,12 +13,14 @@ const links = [
 
 export default function Navbar({ isLoggedIn = false }: { isLoggedIn?: boolean }) {
   return (
-    <header className="sticky top-0 z-40 bg-cream/90 backdrop-blur border-b border-sage-light">
+    <header className="sticky top-0 z-40 bg-cream/95 backdrop-blur border-b border-leaf-light">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-2 focus-ring rounded-sm">
-          <Heart className="h-5 w-5 fill-sage text-sage" strokeWidth={1.5} />
-          <span className="font-display text-xl">
-            Serve<span className="text-sage-DEFAULT" style={{ color: "#8FAE93" }}>Link</span>
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-forest">
+            <Heart className="h-4 w-4 fill-cream text-cream" strokeWidth={1.5} />
+          </span>
+          <span className="font-display text-xl font-semibold">
+            Serve<span className="text-leaf-DEFAULT" style={{ color: "#8DC152" }}>Link</span>
           </span>
         </Link>
 
@@ -30,34 +32,19 @@ export default function Navbar({ isLoggedIn = false }: { isLoggedIn?: boolean })
               </Link>
             </li>
           ))}
-          {isLoggedIn && (
-            <>
-              <li>
-                <Link href="/review" className="hover:text-forest focus-ring rounded-sm">
-                  Review
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-forest focus-ring rounded-sm">
-                  Dashboard
-                </Link>
-              </li>
-            </>
-          )}
         </ul>
 
-        {isLoggedIn ? (
-          <button className="rounded-full bg-forest px-5 py-2 text-sm font-medium text-cream hover:bg-forest-700 focus-ring">
-            Log out
-          </button>
-        ) : (
-          <Link
-            href="/login"
-            className="rounded-full bg-forest px-5 py-2 text-sm font-medium text-cream hover:bg-forest-700 focus-ring"
-          >
+        <div className="flex items-center gap-5">
+          <Link href="/login" className="text-sm font-medium hover:text-forest focus-ring rounded-sm">
             Log in
           </Link>
-        )}
+          <Link
+            href="/signup"
+            className="rounded-full bg-forest px-5 py-2.5 text-sm font-semibold text-cream hover:bg-forest-700 focus-ring"
+          >
+            Join ServeLink
+          </Link>
+        </div>
       </nav>
     </header>
   );
