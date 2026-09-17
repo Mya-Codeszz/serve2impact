@@ -17,10 +17,9 @@ export default async function DashboardPage() {
   .single() as { data: { full_name?: string | null } | null };
 
   const { data: savedRows } = await supabase
-    .from('student_opportunities')
-    .select('*, opportunity:opportunities(title)')
-    .eq('student_id', user.id)
-    .order('saved_at', { ascending: false });
+  .from('student_opportunities')
+  .select('*, opportunity:opportunities(*)')
+  .eq('student_id', user.id);
 
   const { data: hoursRows } = await supabase
     .from('volunteer_hours_log')
