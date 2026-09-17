@@ -1,64 +1,60 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-export default function SaveButton({ opportunityId }: { opportunityId: string }) {
-  const [saved, setSaved] = useState(false);
-  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
-  const supabase = createClient();
-  const router = useRouter();
+type SaveButtonProps = {
+  opportunityId: string;
+  initialSaved?: boolean;
+};
 
-  useEffect(() => {
-    supabase.auth.getUser().then(async ({ data }) => {
-      setLoggedIn(!!data.user);
-      if (!data.user) return;
-      const { data: row } = await supabase
-        .from('student_opportunities')
-        .select('id')
-        .eq('student_id', data.user.id)
-        .eq('opportunity_id', opportunityId)
-        .maybeSingle();
-      setSaved(!!row);
-    });
-  }, [opportunityId, supabase]);
+export default function SaveButton({
+  opportunityId,
+  initialSaved = false,
+}: SaveButtonProps) {
+  const [saved, setSaved] = useState(initialSaved);
+  const [loading, setLoading] = useState(false);
+
+  const supabase = createClient();
 
   async function toggleSave() {
-    if (!loggedIn) {
-      router.push('/login');
+    setLoading(true);
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setLoading(false);
       return;
     }
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) return;
 
     if (saved) {
       await supabase
         .from('student_opportunities')
         .delete()
-        .eq('student_id', userData.user.id)
+        .eq('student_id', user.id)
         .eq('opportunity_id', opportunityId);
-      setSaved(false);
     } else {
       await supabase.from('student_opportunities').insert({
-        student_id: userData.user.id,
+        student_id: user.id,
         opportunity_id: opportunityId,
         status: 'interested',
       });
-      setSaved(true);
     }
+
+    setSaved(!saved);
+    setLoading(false);
   }
 
   return (
     <button
+      type="button"
       onClick={toggleSave}
-      className={`shrink-0 rounded-md border px-4 py-2 text-sm font-medium ${
-        saved
-          ? 'border-brand-600 bg-brand-50 text-brand-700'
-          : 'border-gray-300 text-gray-700 hover:border-brand-400'
-      }`}
+      disabled={loading}
+      className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
     >
-      {saved ? '★ Saved' : '☆ Save'}
+      {saved ? 'Saved' : 'Save'}
     </button>
   );
 }
