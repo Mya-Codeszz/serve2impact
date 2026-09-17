@@ -9,25 +9,25 @@ const config: Config = {
     extend: {
       colors: {
         forest: {
-          DEFAULT: "#1F3A2E", // primary wordmark / nav text
-          700: "#2A4A3A",
+          DEFAULT: "#123B2C", // deep green — headings, footer background
+          700: "#0E2F23",
+        },
+        leaf: {
+          DEFAULT: "#8DC152", // bright playful green — accent text, CTA button
+          light: "#EAF3E1",   // soft green background wash
+          circle: "#DCEBD4",  // icon circle background
         },
         sage: {
-          DEFAULT: "#8FAE93", // heart icon, pill backgrounds
+          DEFAULT: "#8FAE93",
           light: "#DCE8DD",
         },
-        sun: {
-          DEFAULT: "#E8C15A", // sparkles / accent CTA
-        },
         cream: "#FBF9F3",
-        clay: "#8B5E3C",
+        blush: "#F7D9D9", // soft accent for stat pills
       },
       fontFamily: {
         display: ["var(--font-display)", "Georgia", "serif"],
         body: ["var(--font-body)", "system-ui", "sans-serif"],
-      },
-      maxWidth: {
-        prose: "70ch",
+        script: ["var(--font-script)", "cursive"],
       },
     },
   },
