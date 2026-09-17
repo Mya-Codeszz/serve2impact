@@ -24,10 +24,9 @@ export default async function DashboardPage() {
     .eq('student_id', user.id);
 
   const totalHours = (hoursRows ?? []).reduce((sum, r: { hours: number }) => sum + Number(r.hours), 0);
-  const savedCount = (savedRows ?? []).filter((r) => r.status === 'interested').length;
-  const appliedCount = (savedRows ?? []).filter((r) => r.status === 'applied').length;
-  const completedCount = (savedRows ?? []).filter((r) => r.status === 'completed').length;
-
+  const savedCount = (savedRows ?? []).filter((r: { status: string }) => r.status === 'interested').length;
+  const appliedCount = (savedRows ?? []).filter((r: { status: string }) => r.status === 'applied').length;
+  const completedCount = (savedRows ?? []).filter((r: { status: string }) => r.status === 'completed').length;
   return (
     <div>
       <h1 className="text-2xl font-bold">Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''}</h1>
