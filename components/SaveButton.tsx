@@ -15,38 +15,50 @@ export default function SaveButton({
   const [saved, setSaved] = useState(initialSaved);
   const [loading, setLoading] = useState(false);
 
-  const supabase = createClient();
-
   async function toggleSave() {
     setLoading(true);
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    try {
+      const supabase = createClient();
 
-    if (!user) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        return;
+      }
+
+      if (saved) {
+        const { error } = await supabase
+          .from('student_opportunities')
+          .delete()
+          .eq('student_id', user.id)
+          .eq('opportunity_id', opportunityId);
+
+        if (!error) {
+          setSaved(false);
+        }
+      } else {
+        const { error } = await supabase
+          .from('student_opportunities')
+          .insert({
+            student_id: user.id,
+            opportunity_id: opportunityId,
+            status: 'interested',
+          } as {
+            student_id: string;
+            opportunity_id: string;
+            status: 'interested';
+          });
+
+        if (!error) {
+          setSaved(true);
+        }
+      }
+    } finally {
       setLoading(false);
-      return;
     }
-
-    if (saved) {
-      await supabase
-        .from('student_opportunities')
-        .delete()
-        .eq('student_id', user.id)
-        .eq('opportunity_id', opportunityId);
-    } else {
-      await supabase
-        .from('student_opportunities')
-        .insert({
-          student_id: user.id,
-          opportunity_id: opportunityId,
-          status: 'interested',
-        });
-    }
-
-    setSaved(!saved);
-    setLoading(false);
   }
 
   return (
