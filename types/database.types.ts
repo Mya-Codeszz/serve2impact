@@ -98,6 +98,10 @@ export interface Opportunity {
   view_count: number;
   created_at: string;
   updated_at: string;
+
+  // Populated by joined queries.
+  organization?: Organization;
+  categories?: Category[];
 }
 
 export interface StudentOpportunity {
@@ -340,6 +344,7 @@ export interface Database {
 
     Views: Record<string, never>;
     Functions: Record<string, never>;
+
     Enums: {
       opportunity_status: OpportunityStatus;
       commitment_type: CommitmentType;
@@ -347,6 +352,7 @@ export interface Database {
       application_status: ApplicationStatus;
       user_role: UserRole;
     };
+
     CompositeTypes: Record<string, never>;
   };
 }
