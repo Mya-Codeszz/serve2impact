@@ -13,14 +13,31 @@ export function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options: Record<string, unknown>) {
+
+        set(
+          name: string,
+          value: string,
+          options: Record<string, unknown>
+        ) {
           try {
-            cookieStore.set({ name, value, ...options });
+            cookieStore.set({
+              name,
+              value,
+              ...options,
+            });
           } catch {}
         },
-        remove(name: string, options: Record<string, unknown>) {
+
+        remove(
+          name: string,
+          options: Record<string, unknown>
+        ) {
           try {
-            cookieStore.set({ name, value: '', ...options });
+            cookieStore.set({
+              name,
+              value: '',
+              ...options,
+            });
           } catch {}
         },
       },
