@@ -1,12 +1,10 @@
-import { Search, UserCircle, Heart, Star, Clock, Leaf } from "lucide-react";
-
 const features = [
-  { icon: Search, title: "Discover Opportunities", body: "Browse a curated database of verified service roles." },
-  { icon: UserCircle, title: "Create Your Account", body: "Set your preferences, causes, and availability." },
-  { icon: Heart, title: "Save & Track", body: "Keep your favorites and monitor your applications." },
-  { icon: Star, title: "Build Your Impact", body: "Log volunteer hours and get recognized for service." },
-  { icon: Clock, title: "Filter & Search", body: "Narrow by cause, location, age, and date." },
-  { icon: Leaf, title: "Support Your Community", body: "Find local roles that match your passions." },
+  { icon: '⌕', title: 'Discover Opportunities', body: 'Browse a curated database of verified service roles.' },
+  { icon: '○', title: 'Create Your Account', body: 'Set your preferences, causes, and availability.' },
+  { icon: '♡', title: 'Save & Track', body: 'Keep your favorites and monitor your applications.' },
+  { icon: '☆', title: 'Build Your Impact', body: 'Log volunteer hours and get recognized for service.' },
+  { icon: '◷', title: 'Filter & Search', body: 'Narrow by cause, location, age, and date.' },
+  { icon: '⌁', title: 'Support Your Community', body: 'Find local roles that match your passions.' },
 ];
 
 export default function Hero() {
@@ -20,21 +18,20 @@ export default function Hero() {
           </h1>
 
           <dl className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2">
-            {features.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="flex gap-3">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-leaf-circle">
-                  <Icon className="h-5 w-5 text-forest" strokeWidth={1.75} />
+            {features.map((feature) => (
+              <div key={feature.title} className="flex gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-leaf-circle text-xl text-forest">
+                  {feature.icon}
                 </span>
                 <div>
-                  <dt className="font-display font-semibold text-forest">{title}</dt>
-                  <dd className="mt-1 text-sm text-forest/70">{body}</dd>
+                  <dt className="font-display font-semibold text-forest">{feature.title}</dt>
+                  <dd className="mt-1 text-sm text-forest/70">{feature.body}</dd>
                 </div>
               </div>
             ))}
           </dl>
         </div>
 
-        {/* Browser + phone mockup */}
         <div className="relative hidden md:block">
           <div className="rounded-2xl border border-leaf-light bg-white shadow-xl">
             <div className="flex items-center gap-2 rounded-t-2xl bg-leaf-light/70 px-4 py-2.5 text-xs text-forest/60">
@@ -43,7 +40,7 @@ export default function Hero() {
             </div>
             <div className="p-5">
               <div className="flex items-center gap-2 rounded-full border border-leaf-light bg-cream px-4 py-2.5 text-sm text-forest/50">
-                <Search className="h-4 w-4" />
+                <span>⌕</span>
                 Search by cause, location, or keyword...
               </div>
               <p className="mt-5 text-sm font-semibold text-forest">Recommended for You</p>
