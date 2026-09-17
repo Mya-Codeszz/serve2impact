@@ -10,7 +10,11 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+  const { data: profile } = await supabase
+  .from('profiles')
+  .select('*')
+  .eq('id', user.id)
+  .single() as { data: { full_name?: string | null } | null };
 
   const { data: savedRows } = await supabase
     .from('student_opportunities')
@@ -30,9 +34,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <h1 className="text-2xl font-bold">
-  Welcome back{(profile as { full_name?: string | null } | null)?.full_name
-    ? `, ${(profile as { full_name?: string | null }).full_name}`
-    : ''}
+  Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''}
 </h1>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
