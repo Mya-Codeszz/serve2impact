@@ -14,7 +14,7 @@ const impactStats = [
 const spotlights = [
   { name: "Student Spotlight", school: "High school volunteer", image: "/volunteer3.jpg", color: "bg-[#E8F5D5]", story: "One afternoon of volunteering turned into a habit. Finding an opportunity that actually fit their schedule made it easier to keep showing up." },
   { name: "Community Spotlight", school: "Local organization", image: "/volunteer2.webp", color: "bg-[#EEE7FF]", story: "A small team of students helped turn a busy service day into something the whole community could feel. The best part? They came back." },
-  { name: "Making It Count", school: "Student volunteer", image: "/volunteer3.jpg", color: "bg-[#FFE4D5]", story: "Service stopped feeling like another box to check and started feeling like something personal: meeting people, learning something new, and helping out." },
+  { name: "Making It Count", school: "Student volunteer", image: "/volunteer-holding-orange-tabby-kitten.jpg", color: "bg-[#FFE4D5]", story: "Service stopped feeling like another box to check and started feeling like something personal: meeting people, learning something new, and helping out." },
 ];
 
 const quotes = [
