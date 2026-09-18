@@ -2,7 +2,9 @@ import type { StudentOpportunity, Opportunity } from '@/types/database.types';
 
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { Bookmark, Send, Trophy, Clock, Sprout } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
+import PageShell from '@/components/PageShell';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -52,80 +54,76 @@ export default async function DashboardPage() {
     (r) => r.status === 'completed'
   ).length;
 
+  const stats = [
+    { label: 'Saved', value: savedCount, icon: Bookmark, tint: 'bg-leaf-circle' },
+    { label: 'Applied', value: appliedCount, icon: Send, tint: 'bg-leaf-circle' },
+    { label: 'Completed', value: completedCount, icon: Trophy, tint: 'bg-leaf' },
+    { label: 'Total hours', value: totalHours, icon: Clock, tint: 'bg-leaf' },
+  ];
+
   return (
-    <div>
-      <h1 className="text-2xl font-bold">
-        Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''}
+    <PageShell>
+      <h1 className="font-display text-2xl font-semibold text-forest">
+        Welcome back{profile?.full_name ? `, ${profile.full_name}` : ''}!
       </h1>
+      <p className="mt-1 text-sm text-forest/60">Here&apos;s where your service journey stands.</p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-4">
-        {[
-          { label: 'Saved', value: savedCount },
-          { label: 'Applied', value: appliedCount },
-          { label: 'Completed', value: completedCount },
-          { label: 'Total hours', value: totalHours },
-        ].map((stat) => (
-          <div
-            key={stat.label}
-            className="rounded-lg border border-gray-200 bg-white p-4 text-center"
-          >
-            <div className="text-2xl font-bold text-brand-700">
-              {stat.value}
-            </div>
-            <div className="text-sm text-gray-500">{stat.label}</div>
+        {stats.map((stat) => (
+          <div key={stat.label} className={`rounded-2xl ${stat.tint} p-4 text-center`}>
+            <stat.icon className="mx-auto h-5 w-5 text-forest/70" strokeWidth={1.75} />
+            <div className="mt-2 font-display text-2xl font-semibold text-forest">{stat.value}</div>
+            <div className="text-xs text-forest/60">{stat.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 flex gap-4">
+      <div className="mt-8 flex flex-wrap gap-3">
         <Link
           href="/dashboard/saved"
-          className="text-sm font-medium text-brand-700 hover:underline"
+          className="rounded-full border border-leaf-circle bg-white px-4 py-2 text-sm font-medium text-forest hover:bg-leaf-light/60 focus-ring"
         >
           View saved & applications →
         </Link>
 
         <Link
           href="/dashboard/hours"
-          className="text-sm font-medium text-brand-700 hover:underline"
+          className="rounded-full border border-leaf-circle bg-white px-4 py-2 text-sm font-medium text-forest hover:bg-leaf-light/60 focus-ring"
         >
           Log volunteer hours →
         </Link>
       </div>
 
-      <div className="mt-8">
-        <h2 className="font-semibold">Recent activity</h2>
+      <div className="mt-10">
+        <h2 className="font-display font-semibold text-forest">Recent activity</h2>
 
-        {!savedRows?.length && (
-          <p className="mt-2 text-sm text-gray-500">
-            Nothing saved yet —{' '}
+        {!savedRows?.length ? (
+          <div className="mt-3 rounded-2xl bg-leaf-light/60 p-10 text-center">
+            <Sprout className="mx-auto h-8 w-8 text-leaf" strokeWidth={1.5} />
+            <p className="mt-3 font-display font-semibold text-forest">Nothing saved yet</p>
+            <p className="mt-1 text-sm text-forest/60">
+              Your saved opportunities will sprout up here.
+            </p>
             <Link
               href="/search"
-              className="text-brand-700 hover:underline"
+              className="mt-4 inline-block rounded-full bg-leaf px-5 py-2 text-sm font-semibold text-forest hover:brightness-95 focus-ring"
             >
-              browse opportunities
-            </Link>{' '}
-            to get started.
-          </p>
+              Browse opportunities
+            </Link>
+          </div>
+        ) : (
+          <ul className="mt-3 divide-y divide-leaf-circle rounded-2xl border border-leaf-circle bg-white">
+            {savedRows?.slice(0, 5).map((row) => (
+              <li key={row.id} className="flex items-center justify-between px-5 py-3.5 text-sm">
+                <span className="text-forest">{row.opportunity?.title ?? 'Opportunity'}</span>
+                <span className="rounded-full bg-leaf-circle px-2.5 py-0.5 text-xs font-medium capitalize text-forest/70">
+                  {row.status}
+                </span>
+              </li>
+            ))}
+          </ul>
         )}
-
-        <ul className="mt-2 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
-          {savedRows?.slice(0, 5).map((row) => (
-            <li
-              key={row.id}
-              className="flex items-center justify-between px-4 py-3 text-sm"
-            >
-              <span>
-                {row.opportunity?.title ?? 'Opportunity'}
-              </span>
-
-              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs capitalize text-gray-600">
-                {row.status}
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
-    </div>
+    </PageShell>
   );
 }
