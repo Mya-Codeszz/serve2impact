@@ -54,14 +54,20 @@ export default function OnboardingPage() {
     } = await supabase.auth.getUser();
 
     if (user) {
-      await supabase
+      // Supabase's generated types don't yet know about the columns added in
+      // supabase/002_matching_quiz.sql (preferred_commitment_type,
+      // onboarding_completed_at), so bypass strict typing here the same way
+      // SaveButton.tsx does for its insert.
+      const untypedSupabase = supabase as any;
+
+      await untypedSupabase
         .from('profiles')
         .update({
           interests: causes,
           preferred_location_type: locationType === 'no_preference' ? null : locationType,
           preferred_commitment_type: commitmentType,
           onboarding_completed_at: new Date().toISOString(),
-        } as any)
+        })
         .eq('id', user.id);
     }
 
