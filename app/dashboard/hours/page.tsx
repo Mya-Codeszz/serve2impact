@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { PartyPopper, Clock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import PageShell from '@/components/PageShell';
 import type { VolunteerHoursLogEntry } from '@/types/database.types';
 
 export default function HoursPage() {
@@ -44,13 +46,13 @@ export default function HoursPage() {
     } = await supabase.auth.getUser();
     if (!user) return;
 
-await supabase.from('volunteer_hours_log').insert({
-  student_id: user.id,
-  organization_name: orgName,
-  date,
-  hours: Number(hours),
-  description,
-} as any);
+    await supabase.from('volunteer_hours_log').insert({
+      student_id: user.id,
+      organization_name: orgName,
+      date,
+      hours: Number(hours),
+      description,
+    } as any);
 
     setOrgName('');
     setDate('');
@@ -61,34 +63,54 @@ await supabase.from('volunteer_hours_log').insert({
   }
 
   const total = entries.reduce((sum, e) => sum + Number(e.hours), 0);
+  const nextMilestone = Math.ceil((total + 0.01) / 5) * 5;
+  const hoursToGo = Math.max(0, nextMilestone - total);
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <h1 className="text-2xl font-bold">Volunteer Hours</h1>
-      <p className="mt-1 text-gray-600">Total logged: {total} hours</p>
+    <PageShell narrow>
+      <h1 className="font-display text-2xl font-semibold text-forest">Volunteer Hours</h1>
 
-      <form onSubmit={handleSubmit} className="mt-6 grid gap-4 rounded-lg border border-gray-200 bg-white p-5 sm:grid-cols-2">
+      {total > 0 && (
+        <div className="mt-4 flex items-center gap-3 rounded-2xl bg-forest px-5 py-4">
+          <PartyPopper className="h-6 w-6 shrink-0 text-leaf" />
+          <div>
+            <p className="font-display text-sm font-semibold text-cream">
+              {total} hours logged — nice work!
+            </p>
+            {hoursToGo > 0 && (
+              <p className="text-xs text-cream/70">
+                You&apos;re {hoursToGo} hours from your next badge.
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        className="mt-6 grid gap-4 rounded-2xl border border-leaf-circle bg-white p-5 sm:grid-cols-2"
+      >
         <div>
-          <label className="block text-sm font-medium text-gray-700">Organization</label>
+          <label className="block text-sm font-medium text-forest">Organization</label>
           <input
             required
             value={orgName}
             onChange={(e) => setOrgName(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2 text-sm text-forest focus-ring"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Date</label>
+          <label className="block text-sm font-medium text-forest">Date</label>
           <input
             required
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2 text-sm text-forest focus-ring"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700">Hours</label>
+          <label className="block text-sm font-medium text-forest">Hours</label>
           <input
             required
             type="number"
@@ -96,39 +118,45 @@ await supabase.from('volunteer_hours_log').insert({
             min="0.5"
             value={hours}
             onChange={(e) => setHours(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2 text-sm text-forest focus-ring"
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">What did you do?</label>
+          <label className="block text-sm font-medium text-forest">What did you do?</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2 text-sm text-forest focus-ring"
             rows={2}
           />
         </div>
         <button
           type="submit"
           disabled={saving}
-          className="sm:col-span-2 rounded-md bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700 disabled:opacity-50"
+          className="rounded-full bg-leaf px-4 py-2.5 text-sm font-display font-semibold text-forest transition hover:brightness-95 disabled:opacity-50 focus-ring sm:col-span-2"
         >
           {saving ? 'Saving…' : 'Log hours'}
         </button>
       </form>
 
-      <ul className="mt-6 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+      <ul className="mt-6 divide-y divide-leaf-circle rounded-2xl border border-leaf-circle bg-white">
         {entries.map((entry) => (
-          <li key={entry.id} className="flex items-center justify-between px-4 py-3 text-sm">
+          <li key={entry.id} className="flex items-center justify-between px-5 py-3.5 text-sm">
             <div>
-              <div className="font-medium">{entry.organization_name}</div>
-              <div className="text-gray-500">{entry.date} — {entry.description}</div>
+              <div className="font-medium text-forest">{entry.organization_name}</div>
+              <div className="text-forest/50">
+                {entry.date} — {entry.description}
+              </div>
             </div>
-            <span className="font-semibold text-brand-700">{entry.hours}h</span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-leaf-circle px-2.5 py-1 font-semibold text-forest">
+              <Clock className="h-3 w-3" /> {entry.hours}h
+            </span>
           </li>
         ))}
-        {entries.length === 0 && <li className="px-4 py-3 text-sm text-gray-500">No hours logged yet.</li>}
+        {entries.length === 0 && (
+          <li className="px-5 py-3.5 text-sm text-forest/50">No hours logged yet.</li>
+        )}
       </ul>
-    </div>
+    </PageShell>
   );
 }
