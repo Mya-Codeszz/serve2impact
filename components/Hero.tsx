@@ -251,7 +251,7 @@ export default function Hero() {
               <div>
                 <p className="text-xs text-[#55776B]">Good morning,</p>
                 <p className="font-display text-lg font-semibold text-[#123B2C]">
-                  Stacy! ☀️
+                  Mya! ☀️
                 </p>
               </div>
             </div>
@@ -280,6 +280,8 @@ export default function Hero() {
               View My Schedule <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
+        </div>
+      </div>
     </section>
   );
 }
