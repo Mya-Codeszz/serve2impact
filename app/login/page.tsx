@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Heart } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import PageShell from '@/components/PageShell';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -28,44 +30,60 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <h1 className="text-2xl font-bold">Log in</h1>
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
-          <input
-            required
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
-          />
+    <div className="bg-leaf-light/60 py-16">
+      <PageShell narrow>
+        <div className="rounded-2xl bg-white p-8 shadow-sm">
+          <div className="mb-6 flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-forest">
+              <Heart className="h-4 w-4 fill-cream text-cream" />
+            </span>
+            <span className="font-display text-lg font-semibold text-forest">
+              Serve<span className="text-leaf-DEFAULT" style={{ color: '#8DC152' }}>Link</span>
+            </span>
+          </div>
+
+          <h1 className="font-display text-2xl font-semibold text-forest">Welcome back</h1>
+          <p className="mt-1 text-sm text-forest/60">Log in to keep tracking your impact.</p>
+
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-forest">Email</label>
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@school.edu"
+                className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2.5 text-sm text-forest placeholder:text-forest/30 focus-ring"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-forest">Password</label>
+              <input
+                required
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 w-full rounded-lg border border-leaf-circle px-3 py-2.5 text-sm text-forest focus-ring"
+              />
+            </div>
+            {errorMsg && <p className="text-sm text-red-600">{errorMsg}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-full bg-leaf px-4 py-2.5 font-display font-semibold text-forest transition hover:brightness-95 disabled:opacity-50 focus-ring"
+            >
+              {loading ? 'Logging in…' : 'Log in'}
+            </button>
+          </form>
+          <p className="mt-5 text-center text-sm text-forest/60">
+            Don&apos;t have an account?{' '}
+            <Link href="/signup" className="font-medium text-forest hover:underline">
+              Sign up
+            </Link>
+          </p>
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Password</label>
-          <input
-            required
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2"
-          />
-        </div>
-        {errorMsg && <p className="text-sm text-red-600">{errorMsg}</p>}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-md bg-brand-600 px-4 py-2 font-medium text-white hover:bg-brand-700 disabled:opacity-50"
-        >
-          {loading ? 'Logging in…' : 'Log in'}
-        </button>
-      </form>
-      <p className="mt-4 text-sm text-gray-600">
-        Don&apos;t have an account?{' '}
-        <Link href="/signup" className="text-brand-700 hover:underline">
-          Sign up
-        </Link>
-      </p>
+      </PageShell>
     </div>
   );
 }
