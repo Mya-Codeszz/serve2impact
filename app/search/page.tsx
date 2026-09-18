@@ -3,25 +3,10 @@
 import { useMemo, useState } from 'react';
 import { Search, Sprout } from 'lucide-react';
 import OpportunityCard from '@/components/OpportunityCard';
+import RecommendedForYou from '@/components/RecommendedForYou';
 import PageShell from '@/components/PageShell';
 import { mockOpportunities } from '@/lib/mockData';
 import type { CommitmentType, LocationType } from '@/types/database.types';
-
-/*
-  Swap the mock filtering below for a real Supabase query once the schema is
-  live, e.g.:
-
-  const supabase = createClient();
-  let query = supabase
-    .from('opportunities')
-    .select('*, organization:organizations(*), categories:opportunity_categories(category:categories(*))')
-    .eq('status', 'verified');
-
-  if (search) query = query.ilike('title', `%${search}%`);
-  if (locationType) query = query.eq('location_type', locationType);
-  if (commitmentType) query = query.eq('commitment_type', commitmentType);
-  const { data } = await query;
-*/
 
 const CAUSES = [
   { slug: 'animals', name: 'Animals' },
@@ -78,6 +63,8 @@ export default function SearchPage() {
 
   return (
     <PageShell>
+      <RecommendedForYou />
+
       <div className="mb-8 flex items-center gap-3 rounded-full border border-leaf-circle bg-white px-5 py-3">
         <Search className="h-4 w-4 text-forest/50" />
         <input
