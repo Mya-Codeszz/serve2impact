@@ -8,11 +8,37 @@
   --font-script: 'Caveat', cursive;
 }
 
-body { @apply bg-cream text-forest font-body; }
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+html {
+  scroll-behavior: smooth;
 }
 
-.focus-ring { @apply outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-cream; }
-.script-accent { @apply font-script text-2xl; color: #7CAE3E; }
+body {
+  @apply bg-[#FBFAF6] text-[#123B2C] font-body antialiased;
+}
+
+::selection {
+  background: #dceeb7;
+  color: #123b2c;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-[#123B2C] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBFAF6];
+}
+
+.script-accent {
+  @apply font-script text-2xl;
+  color: #7CAE3E;
+}
