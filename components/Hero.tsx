@@ -251,7 +251,7 @@ export default function Hero() {
               <div>
                 <p className="text-xs text-[#55776B]">Good morning,</p>
                 <p className="font-display text-lg font-semibold text-[#123B2C]">
-                  Mya! ☀️
+                  Stacy! ☀️
                 </p>
               </div>
             </div>
@@ -280,23 +280,6 @@ export default function Hero() {
               View My Schedule <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
-
-           <div className="absolute right-[80px] top-[80px] z-30 hidden w-40 rotate-[7deg] font-script text-2xl leading-6 text-[#174534] lg:block">
-  <span className="block">small</span>
-  <span className="block pl-6">steps</span>
-  <span className="block pl-3">big change</span>
-  <span className="mt-1 block text-right text-3xl">♡</span>
-</div>
-
-          <div className="absolute bottom-10 right-[-4px] z-30 hidden -rotate-[5deg] font-script text-xl leading-6 text-[#174534] xl:block">
-            find what
-            <br />
-            moves you
-            <br />
-            <span className="text-2xl">♡</span>
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
