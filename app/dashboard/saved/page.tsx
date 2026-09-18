@@ -1,17 +1,19 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { Bookmark, Send, CheckCircle2, Trophy } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
+import PageShell from '@/components/PageShell';
 import type {
   ApplicationStatus,
   StudentOpportunity,
   Opportunity,
 } from '@/types/database.types';
 
-const SECTIONS: { status: ApplicationStatus; label: string }[] = [
-  { status: 'interested', label: 'Saved' },
-  { status: 'applied', label: 'Applied' },
-  { status: 'accepted', label: 'Accepted' },
-  { status: 'completed', label: 'Completed' },
+const SECTIONS: { status: ApplicationStatus; label: string; icon: typeof Bookmark }[] = [
+  { status: 'interested', label: 'Saved', icon: Bookmark },
+  { status: 'applied', label: 'Applied', icon: Send },
+  { status: 'accepted', label: 'Accepted', icon: CheckCircle2 },
+  { status: 'completed', label: 'Completed', icon: Trophy },
 ];
 
 export default async function SavedOpportunitiesPage() {
@@ -38,8 +40,8 @@ export default async function SavedOpportunitiesPage() {
     };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">My Opportunities</h1>
+    <PageShell>
+      <h1 className="font-display text-2xl font-semibold text-forest">My Opportunities</h1>
 
       <div className="mt-6 space-y-8">
         {SECTIONS.map((section) => {
@@ -49,26 +51,25 @@ export default async function SavedOpportunitiesPage() {
 
           return (
             <div key={section.status}>
-              <h2 className="font-semibold text-gray-800">
+              <h2 className="flex items-center gap-2 font-display font-semibold text-forest">
+                <section.icon className="h-4 w-4 text-leaf" strokeWidth={1.75} />
                 {section.label} ({items.length})
               </h2>
 
               {items.length === 0 ? (
-                <p className="mt-1 text-sm text-gray-500">
-                  Nothing here yet.
-                </p>
+                <p className="mt-1 text-sm text-forest/50">Nothing here yet.</p>
               ) : (
-                <ul className="mt-2 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+                <ul className="mt-2 divide-y divide-leaf-circle rounded-2xl border border-leaf-circle bg-white">
                   {items.map((row) => (
-                    <li key={row.id} className="px-4 py-3 text-sm">
+                    <li key={row.id} className="px-5 py-3.5 text-sm">
                       <Link
                         href={`/opportunities/${row.opportunity?.id}`}
-                        className="hover:text-brand-700"
+                        className="font-medium text-forest hover:underline"
                       >
                         {row.opportunity?.title}
                       </Link>
 
-                      <span className="ml-2 text-gray-500">
+                      <span className="ml-2 text-forest/50">
                         {row.opportunity?.city
                           ? `— ${row.opportunity.city}, ${row.opportunity.state}`
                           : ''}
@@ -81,6 +82,6 @@ export default async function SavedOpportunitiesPage() {
           );
         })}
       </div>
-    </div>
+    </PageShell>
   );
 }
