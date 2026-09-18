@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Bookmark, Send, Trophy, Clock, Sprout } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import PageShell from '@/components/PageShell';
+import RecommendedForYou from '@/components/RecommendedForYou';
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -95,6 +96,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-10">
+        <RecommendedForYou />
+      </div>
+
+      <div>
         <h2 className="font-display font-semibold text-forest">Recent activity</h2>
 
         {!savedRows?.length ? (
