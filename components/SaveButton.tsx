@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Heart } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 type SaveButtonProps = {
@@ -67,8 +68,13 @@ export default function SaveButton({
       type="button"
       onClick={toggleSave}
       disabled={loading}
-      className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition disabled:opacity-50 focus-ring ${
+        saved
+          ? 'border-leaf bg-leaf-circle text-forest'
+          : 'border-leaf-circle bg-white text-forest hover:bg-leaf-light/60'
+      }`}
     >
+      <Heart className={`h-4 w-4 ${saved ? 'fill-forest text-forest' : 'text-forest/60'}`} />
       {saved ? 'Saved' : 'Save'}
     </button>
   );
